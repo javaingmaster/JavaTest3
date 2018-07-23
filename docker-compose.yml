@@ -1,0 +1,35 @@
+version: "3"
+services:
+  mysql:
+    container_name: themysql
+    image: mysql:v1
+    hostname: mysql
+    ports:
+      - "3306:3306"
+    command: mysql -uroot -padmin -e "create database sakila;use sakila;source sakila-schema.sql;source sakila-data.sql;grant all privileges on *.* to '' @'%' identified by '123456';flush privileges;"
+    environment:
+      - MYSQL_ROOT_PASSWORD: admin
+    expose:
+    - "3306"
+  java:
+    container_name: thejava
+    image: java:v1
+    hostname: java
+    command: java -jar /root/Exam1-1.0-SNAPSHOT.jar
+    environment:
+      - driver: com.mysql.jdbc.Driver
+      - ip: 192.168.99.100
+      - port: 3306
+      - database: sakila
+      - user: root
+      - password: admin
+      - country-id: 46
+
+     command: java -jar /root/Exam2-1.0-SNAPSHOT.jar
+       - driver: com.mysql.jdbc.Driver
+       - ip: 192.168.99.100
+       - port: 3306
+       - database: sakila
+       - user: root
+       - password: admin
+       - customer-id: 46
